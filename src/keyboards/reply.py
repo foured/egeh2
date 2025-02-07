@@ -6,7 +6,8 @@ from aiogram.types import(
 main_menu_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Ударения')
+            KeyboardButton(text='Ударения'),
+            KeyboardButton(text='Трудные слова (9-12)')
         ]
     ],
     resize_keyboard=True,

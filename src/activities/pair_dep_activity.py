@@ -1,11 +1,12 @@
 import random
 
 class PairDependendActivity():
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, fast_search: bool = True) -> None:
         with open(path, encoding='utf-8') as file:
             words = [ws for ws in [line.split() for line in file]]
             self.c_words = [ws[0] for ws in words]
             self.w_words = [ws[1] for ws in words]
+            self.fast_search = fast_search
 
     def get_random_pair(self) -> tuple[str, str]:
         ri = random.randint(0, len(self.c_words) - 1)
@@ -22,7 +23,7 @@ class PairDependendActivity():
     
     def get_correct_word(self, input: str) -> str:
         for i in range(len(self.c_words)):
-            if self.c_words[i].lower()[0] > input.lower()[0]:
+            if self.fast_search and self.c_words[i].lower()[0] > input.lower()[0]:
                 break
 
             if self.c_words[i] == input or self.w_words[i] == input:
@@ -33,10 +34,10 @@ class PairDependendActivity():
     def get_word_id(self, input: str) -> int:
         li = input.lower()
         for i in range(len(self.c_words)):
-            if self.c_words[i].lower()[0] > li[0]:
+            if  self.fast_search and self.c_words[i].lower()[0] > li[0]:
                 break 
 
-            if self.c_words[i].lower() == li:
+            if self.c_words[i].lower() == li or self.w_words[i].lower() == li:
                 return i
         return -1
 

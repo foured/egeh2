@@ -219,7 +219,9 @@ class PDActionStateBase(State):
         return ReplyKeyboardMarkup(
             keyboard=[
                 [
-                    KeyboardButton(text=words[0]),
+                    KeyboardButton(text=words[0])
+                ],
+                [
                     KeyboardButton(text=words[1])
                 ]
             ],

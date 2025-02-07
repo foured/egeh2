@@ -10,6 +10,7 @@ class State():
     def __init__(self, tree) -> None:
         from src.state_machine.state_tree import StateTree
         self.tree: 'StateTree' = tree
+        tree.add_state(self)
 
     @abstractmethod
     async def enable(self, bundle: StateBundle = None) -> None:
