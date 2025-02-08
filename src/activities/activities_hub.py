@@ -10,7 +10,8 @@ class ActivitiesHub():
     @staticmethod
     def setup():
         ActivitiesHub.activities.append(RussianNumber_4())
-        ActivitiesHub.activities.append(RussianHTR())
+        ActivitiesHub.activities.append(RussianNumber_9())
+        ActivitiesHub.activities.append(RussianNumber_10())
 
     @staticmethod
     def get(type: Type[PDT]) -> PDT:

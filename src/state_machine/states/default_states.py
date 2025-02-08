@@ -30,8 +30,11 @@ class MainMenuState(State):
         if text == 'ударения':
             await self.tree.set_state_by_type(AccentsMenuState)
 
-        elif text == 'трудные слова (9-12)':
-            await self.tree.set_state_by_type(HTRMenuState)
+        elif text == 'трудные слова (9)':
+            await self.tree.set_state_by_type(N9_MenuState)
+
+        elif text == 'трудные слова (10)':
+            await self.tree.set_state_by_type(N10_MenuState)
 
         else:
             await super().get_bot().send_message(
@@ -54,6 +57,10 @@ class AccentsMenuState(PDActioMenuStateBase):
     
     def get_score(self):
         return self.tree.user.data.rus_n4_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_n4_stats \
+            = ActivitiesHub.get(RussianNumber_4).create_statistics_array()
 
 
 
@@ -78,33 +85,74 @@ class AccentsActionState(PDActionStateBase):
 
 
 
-class HTRMenuState(PDActioMenuStateBase):
+class N9_MenuState(PDActioMenuStateBase):
     def __init__(self, tree):
-        super().__init__(tree, 'Меню трудных слов. Выберите действие', MainMenuState,
-                          HTRActionState, RussianHTR)
+        super().__init__(tree, 'Меню номера 9. Выберите действие', MainMenuState,
+                          N9_ActionState, RussianNumber_9)
         
     def get_weights(self):
-        return self.tree.user.data.rus_htr_stats
+        return self.tree.user.data.rus_n9_stats
     
     def get_score(self):
-        return self.tree.user.data.rus_htr_score
+        return self.tree.user.data.rus_n9_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_n9_stats \
+            = ActivitiesHub.get(RussianNumber_9).create_statistics_array()
 
 
 
 
-class HTRActionState(PDActionStateBase):
+class N9_ActionState(PDActionStateBase):
     def __init__(self, tree):
         super().__init__(tree, 'Выберите слово с правильным написанием.', 
-                         HTRMenuState, RussianHTR)
+                         N9_MenuState, RussianNumber_9)
 
     def get_weights(self):
-        return self.tree.user.data.rus_htr_stats
+        return self.tree.user.data.rus_n9_stats
     
     def add_weight(self, idx, val):
-        self.tree.user.data.rus_htr_stats[idx] += val
+        self.tree.user.data.rus_n9_stats[idx] += val
 
     def get_score(self):
-        return self.tree.user.data.rus_htr_score
+        return self.tree.user.data.rus_n9_score
     
     def set_score(self, value):
-        self.tree.user.data.rus_htr_score = value
+        self.tree.user.data.rus_n9_score = value
+
+
+
+class N10_MenuState(PDActioMenuStateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Меню номера 10. Выберите действие', MainMenuState,
+                          N10_ActionState, RussianNumber_10)
+        
+    def get_weights(self):
+        return self.tree.user.data.rus_n10_stats
+    
+    def get_score(self):
+        return self.tree.user.data.rus_n10_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_n10_stats \
+            = ActivitiesHub.get(RussianNumber_10).create_statistics_array()
+
+
+
+
+class N10_ActionState(PDActionStateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Выберите слово с правильным написанием.', 
+                         N10_MenuState, RussianNumber_10)
+
+    def get_weights(self):
+        return self.tree.user.data.rus_n10_stats
+    
+    def add_weight(self, idx, val):
+        self.tree.user.data.rus_n10_stats[idx] += val
+
+    def get_score(self):
+        return self.tree.user.data.rus_n10_score
+    
+    def set_score(self, value):
+        self.tree.user.data.rus_n10_score = value

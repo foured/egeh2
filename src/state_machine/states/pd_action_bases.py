@@ -37,6 +37,9 @@ class PDActioMenuStateBase(State):
     def get_weights(self) -> list[int]:
         ...
 
+    def rest_weights(self) -> None:
+        ...
+
     @abstractmethod
     def get_score(self) -> int:
         ...
@@ -83,6 +86,13 @@ class PDActioMenuStateBase(State):
                     text='Ошибок нет!',
                     reply_markup=reply.action_menu_kb
                 )
+
+        elif text == 'сбросить статистику':
+            self.rest_weights()
+            await message.answer(
+                text=f'Статистика ошибок сброшена',
+                reply_markup=reply.action_menu_kb
+            )
 
         elif text == 'назад':
             await self.tree.set_state_by_type(self.return_to)
@@ -151,10 +161,10 @@ class PDActionStateBase(State):
 
         res: bool = ActivitiesHub.get(self.activity).is_word_correct(text)
         word_id: int = ActivitiesHub.get(self.activity).get_word_id(text)
-        self.memory.add(word_id)
 
         if word_id != -1:
             self.add_weight(word_id, -1 if res else 1)
+            self.memory.add(word_id)            
 
         if res:
             self.score += 1
@@ -185,31 +195,31 @@ class PDActionStateBase(State):
             self.score=0
             await self.tree.set_state_by_type(self.return_to)
 
-    def get_random_word_id(self) -> int:
-        act: PairDependendActivity = ActivitiesHub.get(self.activity)
 
+    def get_random_not_in_memoty_id(self) -> int:
+        act: PairDependendActivity = ActivitiesHub.get(self.activity)
+        w_idx: int = act.get_random_id()
+        while w_idx in self.memory:
+            w_idx = act.get_random_id()
+        return w_idx
+
+    def get_random_word_id(self) -> int:
         match self.mode:
             case PDActionStateBase.Mode.Random:
-                w_idx: int = act.get_random_id()
-                while w_idx in self.memory:
-                    w_idx = act.get_random_id()
-                return w_idx
+                return self.get_random_not_in_memoty_id()
             
             case PDActionStateBase.Mode.Errors:
-                ml: int = len(self.memory) + 1
                 weights = self.get_weights()
+                idxs = [i for i in range(len(weights)) if weights[i] > 0]
+                weights = [w for w in weights if w > 0]
 
-                total_weight = sum(weights)
-                if total_weight == 0:
-                    normalized_weights = [1 / len(weights)] * len(weights)
-                else:
-                    normalized_weights = [w / total_weight for w in weights]
-                
-                w_idxs = random.choices(range(len(normalized_weights)), weights=normalized_weights, k=ml)
-                for w_idx in w_idxs:
-                    if w_idx not in self.memory:
-                        return w_idx
-                return act.get_random_id()
+                if not sum(weights) == 0:
+                    rarr = random.choices(idxs, weights=weights, k=sum(weights))
+                    for idx in rarr:
+                        if idx not in self.memory:
+                            return(idx)
+
+                return self.get_random_not_in_memoty_id()
         raise NotImplementedError()
 
     def generate_keyboard(self) -> ReplyKeyboardMarkup:

@@ -7,27 +7,35 @@ from src.activities.activities_hub import *
 
 class User():
     class Data():
-        def __init__(self, rus_n4_score: int = 0, rus_htr: int = 0):
+        def __init__(self, rus_n4_score: int = 0, rus_htr: int = 0,
+                     rus_n10_score: int = 0):
             self.rus_n4_score: int = rus_n4_score
             self.rus_n4_stats: list[int] \
                 = ActivitiesHub.get(RussianNumber_4).create_statistics_array()
-            self.rus_htr_score: int = rus_htr
-            self.rus_htr_stats: list[int] \
-                = ActivitiesHub.get(RussianHTR).create_statistics_array()
+            self.rus_n9_score: int = rus_htr
+            self.rus_n9_stats: list[int] \
+                = ActivitiesHub.get(RussianNumber_9).create_statistics_array()
+            self.rus_n10_score: int = rus_n10_score
+            self.rus_n10_stats: list[int] \
+                = ActivitiesHub.get(RussianNumber_10).create_statistics_array()
 
         def to_dict(self):
             return {
                 'rus_n4_score': self.rus_n4_score,
                 'rus_n4_stats': self.rus_n4_stats,
-                'rus_htr_score': self.rus_htr_score,
-                'rus_htr_stats': self.rus_htr_stats
+                'rus_n9_score': self.rus_n9_score,
+                'rus_n9_stats': self.rus_n9_stats,
+                'rus_n10_score': self.rus_n10_score,
+                'rus_n10_stats': self.rus_n10_stats,
             }
         
         @staticmethod
         def from_dict(data) -> 'User.Data':
-            d = User.Data(data['rus_n4_score'], data['rus_htr_score'])
+            d = User.Data(data['rus_n4_score'], data['rus_n9_score'], 
+                          data['rus_n10_score'])
             d.rus_n4_stats = list(data['rus_n4_stats'])
-            d.rus_htr_stats = list(data['rus_htr_stats'])
+            d.rus_n9_stats = list(data['rus_n9_stats'])
+            d.rus_n10_stats = list(data['rus_n10_stats'])
             return d
 
     def __init__(self, id: str, bot: Bot, data: 'User.Data' = None) -> None:
@@ -49,8 +57,10 @@ class User():
         mms = MainMenuState(self.tree)
         ams = AccentsMenuState(self.tree)
         aas = AccentsActionState(self.tree)
-        htrms = HTRMenuState(self.tree)
-        htras = HTRActionState(self.tree)
+        n9ms = N9_MenuState(self.tree)
+        n9as = N9_ActionState(self.tree)
+        n10ms = N10_MenuState(self.tree)
+        n10as = N10_ActionState(self.tree)
         # self.tree.add_state(mms)
         # self.tree.add_state(ams)
         # self.tree.add_state(aas)

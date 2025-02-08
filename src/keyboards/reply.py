@@ -6,8 +6,11 @@ from aiogram.types import(
 main_menu_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Ударения'),
-            KeyboardButton(text='Трудные слова (9-12)')
+            KeyboardButton(text='Ударения')
+        ],
+        [
+            KeyboardButton(text='Трудные слова (9)'),
+            KeyboardButton(text='Трудные слова (10)')
         ]
     ],
     resize_keyboard=True,
@@ -26,6 +29,7 @@ action_menu_kb = ReplyKeyboardMarkup(
 
         ],
         [
+            KeyboardButton(text='Сбросить статистику'),
             KeyboardButton(text='Назад')
         ]
     ],
