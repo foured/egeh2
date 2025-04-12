@@ -8,7 +8,7 @@ from src.activities.activities_hub import *
 class User():
     class Data():
         def __init__(self, rus_n4_score: int = 0, rus_htr: int = 0,
-                     rus_n10_score: int = 0):
+                     rus_n10_score: int = 0, rus_vcblr: int = 0):
             self.rus_n4_score: int = rus_n4_score
             self.rus_n4_stats: list[int] \
                 = ActivitiesHub.get(RussianNumber_4).create_statistics_array()
@@ -18,6 +18,9 @@ class User():
             self.rus_n10_score: int = rus_n10_score
             self.rus_n10_stats: list[int] \
                 = ActivitiesHub.get(RussianNumber_10).create_statistics_array()
+            self.rus_vcblr_score = rus_vcblr
+            self.rus_vcblr_stats: list[int] \
+                = ActivitiesHub.get(RussianVocabulary).create_statistics_array()
 
         def to_dict(self):
             return {
@@ -27,15 +30,18 @@ class User():
                 'rus_n9_stats': self.rus_n9_stats,
                 'rus_n10_score': self.rus_n10_score,
                 'rus_n10_stats': self.rus_n10_stats,
+                'rus_vcblr_score': self.rus_vcblr_score,
+                'rus_vcblr_stats': self.rus_vcblr_stats
             }
         
         @staticmethod
         def from_dict(data) -> 'User.Data':
             d = User.Data(data['rus_n4_score'], data['rus_n9_score'], 
-                          data['rus_n10_score'])
+                          data['rus_n10_score'], data['rus_vcblr_score'])
             d.rus_n4_stats = list(data['rus_n4_stats'])
             d.rus_n9_stats = list(data['rus_n9_stats'])
             d.rus_n10_stats = list(data['rus_n10_stats'])
+            d.rus_vcblr_stats = list(data['rus_vcblr_stats'])
             return d
 
     def __init__(self, id: str, bot: Bot, data: 'User.Data' = None) -> None:
@@ -61,10 +67,8 @@ class User():
         n9as = N9_ActionState(self.tree)
         n10ms = N10_MenuState(self.tree)
         n10as = N10_ActionState(self.tree)
-        # self.tree.add_state(mms)
-        # self.tree.add_state(ams)
-        # self.tree.add_state(aas)
-        # self.tree.add_state(htrms)
+        vms = Vocabulary_MenuState(self.tree)
+        vas = Vocabulary_ActionState(self.tree)
     
     def to_dict(self):
         return {

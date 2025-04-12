@@ -35,6 +35,9 @@ class MainMenuState(State):
 
         elif text == 'трудные слова (10)':
             await self.tree.set_state_by_type(N10_MenuState)
+        
+        elif text == 'словарные слова':
+            await self.tree.set_state_by_type(Vocabulary_MenuState)
 
         else:
             await super().get_bot().send_message(
@@ -156,3 +159,41 @@ class N10_ActionState(PDActionStateBase):
     
     def set_score(self, value):
         self.tree.user.data.rus_n10_score = value
+
+
+
+
+class Vocabulary_MenuState(PDActioMenuStateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Меню словарных слов. Выберите действие', MainMenuState,
+                          Vocabulary_ActionState, RussianVocabulary)
+        
+    def get_weights(self):
+        return self.tree.user.data.rus_vcblr_stats
+    
+    def get_score(self):
+        return self.tree.user.data.rus_vcblr_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_vcblr_stats \
+            = ActivitiesHub.get(RussianVocabulary).create_statistics_array()
+
+
+
+class Vocabulary_ActionState(PDActionStateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Выберите слово с правильным написанием.', 
+                         Vocabulary_MenuState, RussianVocabulary)
+        self.memory = FixedSizeList(30)
+
+    def get_weights(self):
+        return self.tree.user.data.rus_vcblr_stats
+    
+    def add_weight(self, idx, val):
+        self.tree.user.data.rus_vcblr_stats[idx] += val
+
+    def get_score(self):
+        return self.tree.user.data.rus_vcblr_score
+    
+    def set_score(self, value):
+        self.tree.user.data.rus_vcblr_score = value

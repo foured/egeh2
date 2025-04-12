@@ -170,7 +170,7 @@ class PDActionStateBase(State):
             self.score += 1
             await self.get_bot().send_message(
                 chat_id=self.get_id(),
-                text='✅Правльно!',
+                text='✅Правильно!',
                 reply_markup=self.generate_keyboard()
             )
 
@@ -229,10 +229,10 @@ class PDActionStateBase(State):
         return ReplyKeyboardMarkup(
             keyboard=[
                 [
-                    KeyboardButton(text=words[0])
+                    KeyboardButton(text = words[0])
                 ],
                 [
-                    KeyboardButton(text=words[1])
+                    KeyboardButton(text = words[1])
                 ]
             ],
             resize_keyboard=True,

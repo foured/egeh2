@@ -11,6 +11,9 @@ main_menu_kb = ReplyKeyboardMarkup(
         [
             KeyboardButton(text='Трудные слова (9)'),
             KeyboardButton(text='Трудные слова (10)')
+        ],
+        [
+            KeyboardButton(text='Словарные слова')
         ]
     ],
     resize_keyboard=True,

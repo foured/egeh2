@@ -13,3 +13,7 @@ class RussianNumber_9(PairDependendActivity):
 class RussianNumber_10(PairDependendActivity):
     def __init__(self):
         super().__init__('res/rus_n10.txt', '; ')
+    
+class RussianVocabulary(PairDependendActivity):
+    def __init__(self):
+        super().__init__('res/rus_vcblr.txt')
