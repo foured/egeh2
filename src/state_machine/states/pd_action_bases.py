@@ -6,6 +6,7 @@ import random
 import enum
 from typing import TypeVar
 from abc import abstractmethod
+import re
 
 from src.keyboards import reply
 from src.activities.activities_hub import *
@@ -190,7 +191,8 @@ class PDActionStateBase(State):
                 self.set_score(self.score)
 
             await message.reply(
-                text=f'Правильный ответ: {correct_answer}'
+                text=f'Правильный ответ: { PDActionStateBase.wrap_uppercase(correct_answer)}',
+                parse_mode='HTML'
             )
             self.score=0
             await self.tree.set_state_by_type(self.return_to)
@@ -238,3 +240,6 @@ class PDActionStateBase(State):
             resize_keyboard=True,
             one_time_keyboard=True
         )
+    
+    def wrap_uppercase(text) -> str:
+        return re.sub(r'([A-ZА-ЯЁ])', r'<b>\1</b>', text)

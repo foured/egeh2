@@ -184,7 +184,7 @@ class Vocabulary_ActionState(PDActionStateBase):
     def __init__(self, tree):
         super().__init__(tree, 'Выберите слово с правильным написанием.', 
                          Vocabulary_MenuState, RussianVocabulary)
-        self.memory = FixedSizeList(30)
+        self.memory = FixedSizeList(50)
 
     def get_weights(self):
         return self.tree.user.data.rus_vcblr_stats
