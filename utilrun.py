@@ -18,7 +18,7 @@
 #         for line in a:
 #             out.write(line.strip() + '\n')
 
-with open('res/dbg.txt', encoding='utf-8') as file:
-    with open('res/dbg1.txt', mode='w', encoding='utf-8') as out:
-        for line in file:
-            out.write(line.strip() + ' ' + line)
+# with open('res/dbg.txt', encoding='utf-8') as file:
+#     with open('res/dbg1.txt', mode='w', encoding='utf-8') as out:
+#         for line in file:
+#             out.write(line.strip() + ' ' + line)

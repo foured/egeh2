@@ -50,3 +50,6 @@ class PairDependendActivity():
 
     def create_statistics_array(self) -> list[int]:
         return [0] * self.get_words_len()
+    
+    def get_ans(self, id: int) -> str:
+        return self.get_pair(id)[0]

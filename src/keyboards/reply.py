@@ -13,7 +13,8 @@ main_menu_kb = ReplyKeyboardMarkup(
             KeyboardButton(text='Трудные слова (10)')
         ],
         [
-            KeyboardButton(text='Словарные слова')
+            KeyboardButton(text='Словарные слова'),
+            KeyboardButton(text='Суффиксы глаголов')
         ]
     ],
     resize_keyboard=True,

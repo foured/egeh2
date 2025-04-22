@@ -8,7 +8,9 @@ import enum
 from src.keyboards import reply
 from src.activities.activities_hub import *
 from src.containers.fixeds_list import FixedSizeList
-from src.state_machine.states.pd_action_bases import PDActioMenuStateBase, PDActionStateBase
+from src.state_machine.states.pd_action_state import PDActionStateBase
+from src.state_machine.states.quiz_states import QuizMenuState
+from src.state_machine.states.iv_action_state import IVActionSateBase
 
 class MainMenuState(State):
     def __init__(self, tree: StateTree) -> None:
@@ -39,6 +41,9 @@ class MainMenuState(State):
         elif text == 'словарные слова':
             await self.tree.set_state_by_type(Vocabulary_MenuState)
 
+        elif text == 'суффиксы глаголов':
+            await self.tree.set_state_by_type(VerbSuffix_MenuState)
+
         else:
             await super().get_bot().send_message(
                 chat_id=self.tree.user.id,
@@ -50,7 +55,7 @@ class MainMenuState(State):
 
 
 
-class AccentsMenuState(PDActioMenuStateBase):
+class AccentsMenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню ударений. Выберите действие', MainMenuState,
                           AccentsActionState, RussianNumber_4)
@@ -88,7 +93,7 @@ class AccentsActionState(PDActionStateBase):
 
 
 
-class N9_MenuState(PDActioMenuStateBase):
+class N9_MenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню номера 9. Выберите действие', MainMenuState,
                           N9_ActionState, RussianNumber_9)
@@ -125,7 +130,7 @@ class N9_ActionState(PDActionStateBase):
 
 
 
-class N10_MenuState(PDActioMenuStateBase):
+class N10_MenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню номера 10. Выберите действие', MainMenuState,
                           N10_ActionState, RussianNumber_10)
@@ -163,7 +168,7 @@ class N10_ActionState(PDActionStateBase):
 
 
 
-class Vocabulary_MenuState(PDActioMenuStateBase):
+class Vocabulary_MenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню словарных слов. Выберите действие', MainMenuState,
                           Vocabulary_ActionState, RussianVocabulary)
@@ -197,3 +202,37 @@ class Vocabulary_ActionState(PDActionStateBase):
     
     def set_score(self, value):
         self.tree.user.data.rus_vcblr_score = value
+
+
+class VerbSuffix_MenuState(QuizMenuState):
+    def __init__(self, tree):
+        super().__init__(tree, 'Меню суффиксов глаголов. Выберите действие', MainMenuState,
+                          VerbSuffix_ActionState, RussianVerbSuffix)
+        
+    def get_weights(self):
+        return self.tree.user.data.rus_vrb_sfx_stats
+    
+    def get_score(self):
+        return self.tree.user.data.rus_vrb_sfx_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_vrb_sfx_stats \
+            = ActivitiesHub.get(RussianVerbSuffix).create_statistics_array()
+        
+
+class VerbSuffix_ActionState(IVActionSateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Выберите правильную букву.', 
+                         VerbSuffix_MenuState, RussianVerbSuffix)
+
+    def get_weights(self):
+        return self.tree.user.data.rus_vrb_sfx_stats
+    
+    def add_weight(self, idx, val):
+        self.tree.user.data.rus_vrb_sfx_stats[idx] += val
+
+    def get_score(self):
+        return self.tree.user.data.rus_vrb_sfx_score
+    
+    def set_score(self, value):
+        self.tree.user.data.rus_vrb_sfx_score = value
