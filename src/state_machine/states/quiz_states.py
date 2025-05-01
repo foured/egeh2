@@ -13,7 +13,6 @@ from src.containers.fixeds_list import FixedSizeList
 from src.activities.activities_hub import *
 
 
-
 StateT = TypeVar('StateT', bound=State)
 T = TypeVar('T')
 
@@ -76,12 +75,13 @@ class QuizMenuState(State):
                 errors: str = ''
                 act = ActivitiesHub.get(self.activity)
                 for index, value in stats_d:
-                    errors += f'{value} - {act.get_ans(index)}\n'
+                    errors += f'{value} - {QuizActionState.wrap_uppercase(act.get_answer(index))}\n'
                 errors = errors.strip()
 
                 await message.answer(
                     text=errors,
-                    reply_markup=reply.action_menu_kb
+                    reply_markup=reply.action_menu_kb,
+                    parse_mode='HTML'
                 )
 
             else:

@@ -1,6 +1,8 @@
 import random
 
-class PairDependendActivity():
+from src.activities.activity_base import ActivityBase
+
+class PairDependendActivity(ActivityBase):
     def __init__(self, path: str, separator: str = ' ') -> None:
         with open(path, encoding='utf-8') as file:
             words = [ws for ws in [line.split(separator) for line in file]]
@@ -51,5 +53,5 @@ class PairDependendActivity():
     def create_statistics_array(self) -> list[int]:
         return [0] * self.get_words_len()
     
-    def get_ans(self, id: int) -> str:
+    def get_answer(self, id: int) -> str:
         return self.get_pair(id)[0]

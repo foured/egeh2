@@ -1,7 +1,9 @@
 import re
 import random
 
-class InsertValueActivity():
+from src.activities.activity_base import ActivityBase
+
+class InsertValueActivity(ActivityBase):
     class InsertedItem():
         def __init__(self, line: str, id: int) -> None:
             self.id = id
@@ -37,7 +39,7 @@ class InsertValueActivity():
     def get_item(self, idx: int) -> InsertedItem:
         return self.items[idx]
     
-    def get_ans(self, idx: int) -> str:
+    def get_answer(self, idx: int) -> str:
         i = self.items[idx]
         w = i.word
         return w.replace('...', i.items[0])

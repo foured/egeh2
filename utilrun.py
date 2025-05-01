@@ -22,3 +22,8 @@
 #     with open('res/dbg1.txt', mode='w', encoding='utf-8') as out:
 #         for line in file:
 #             out.write(line.strip() + ' ' + line)
+
+
+with open('res/dbg1.txt', encoding='utf-8') as file:
+    s = file.read().split()
+    print(len(s), len(set(s)))
