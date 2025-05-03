@@ -34,15 +34,15 @@ class MainMenuState(State):
 
         elif text == 'трудные слова (9)':
             await self.tree.set_state_by_type(N9_MenuState)
-
-        elif text == 'трудные слова (10)':
-            await self.tree.set_state_by_type(N10_MenuState)
-        
+       
         elif text == 'словарные слова':
             await self.tree.set_state_by_type(Vocabulary_MenuState)
 
         elif text == 'суффиксы глаголов':
             await self.tree.set_state_by_type(VerbSuffix_MenuState)
+
+        elif text == 'пре при':
+            await self.tree.set_state_by_type(PrePri_MenuState)
 
         else:
             await super().get_bot().send_message(
@@ -130,44 +130,6 @@ class N9_ActionState(PDActionStateBase):
 
 
 
-class N10_MenuState(QuizMenuState):
-    def __init__(self, tree):
-        super().__init__(tree, 'Меню номера 10. Выберите действие', MainMenuState,
-                          N10_ActionState, RussianNumber_10)
-        
-    def get_weights(self):
-        return self.tree.user.data.rus_n10_stats
-    
-    def get_score(self):
-        return self.tree.user.data.rus_n10_score
-    
-    def rest_weights(self):
-        self.tree.user.data.rus_n10_stats \
-            = ActivitiesHub.get(RussianNumber_10).create_statistics_array()
-
-
-
-
-class N10_ActionState(PDActionStateBase):
-    def __init__(self, tree):
-        super().__init__(tree, 'Выберите слово с правильным написанием.', 
-                         N10_MenuState, RussianNumber_10)
-
-    def get_weights(self):
-        return self.tree.user.data.rus_n10_stats
-    
-    def add_weight(self, idx, val):
-        self.tree.user.data.rus_n10_stats[idx] += val
-
-    def get_score(self):
-        return self.tree.user.data.rus_n10_score
-    
-    def set_score(self, value):
-        self.tree.user.data.rus_n10_score = value
-
-
-
-
 class Vocabulary_MenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню словарных слов. Выберите действие', MainMenuState,
@@ -236,3 +198,38 @@ class VerbSuffix_ActionState(IVActionSateBase):
     
     def set_score(self, value):
         self.tree.user.data.rus_vrb_sfx_score = value
+
+
+
+class PrePri_MenuState(QuizMenuState):
+    def __init__(self, tree):
+        super().__init__(tree, 'Меню ПРЕ ПРИ. Выберите действие', MainMenuState,
+                          PrePri_ActionState, RussianPrePri)
+        
+    def get_weights(self):
+        return self.tree.user.data.rus_prepri_stats
+    
+    def get_score(self):
+        return self.tree.user.data.rus_prepri_score
+    
+    def rest_weights(self):
+        self.tree.user.data.rus_prepri_stats \
+            = ActivitiesHub.get(RussianPrePri).create_statistics_array()
+        
+
+class PrePri_ActionState(IVActionSateBase):
+    def __init__(self, tree):
+        super().__init__(tree, 'Выберите правильную букву.', 
+                         PrePri_MenuState, RussianPrePri)
+
+    def get_weights(self):
+        return self.tree.user.data.rus_prepri_stats
+    
+    def add_weight(self, idx, val):
+        self.tree.user.data.rus_prepri_stats[idx] += val
+
+    def get_score(self):
+        return self.tree.user.data.rus_prepri_score
+    
+    def set_score(self, value):
+        self.tree.user.data.rus_prepri_score = value

@@ -11,9 +11,9 @@ class ActivitiesHub():
     def setup():
         ActivitiesHub.activities.append(RussianNumber_4())
         ActivitiesHub.activities.append(RussianNumber_9())
-        ActivitiesHub.activities.append(RussianNumber_10())
         ActivitiesHub.activities.append(RussianVocabulary())
         ActivitiesHub.activities.append(RussianVerbSuffix())
+        ActivitiesHub.activities.append(RussianPrePri())
 
     @staticmethod
     def get(type: Type[PDT]) -> PDT:

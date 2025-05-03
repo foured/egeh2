@@ -6,15 +6,15 @@ from aiogram.types import(
 main_menu_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Ударения')
-        ],
-        [
-            KeyboardButton(text='Трудные слова (9)'),
-            KeyboardButton(text='Трудные слова (10)')
+            KeyboardButton(text='Ударения'),
+            KeyboardButton(text='Трудные слова (9)')
         ],
         [
             KeyboardButton(text='Словарные слова'),
             KeyboardButton(text='Суффиксы глаголов')
+        ],
+        [
+            KeyboardButton(text='Пре При')
         ]
     ],
     resize_keyboard=True,
