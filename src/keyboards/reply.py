@@ -34,6 +34,9 @@ action_menu_kb = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text='Сбросить статистику'),
+            KeyboardButton(text='Все слова')
+        ],
+        [
             KeyboardButton(text='Назад')
         ]
     ],

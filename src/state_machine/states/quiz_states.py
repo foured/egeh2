@@ -97,6 +97,16 @@ class QuizMenuState(State):
                 reply_markup=reply.action_menu_kb
             )
 
+        elif text == 'все слова':
+            s = ActivitiesHub.get(self.activity).get_all_words()
+            for chunk in QuizMenuState.split_into_chunks(s):
+                await super().get_bot().send_message(
+                    chat_id=super().get_id(),
+                    text=QuizActionState.wrap_uppercase(chunk),
+                    reply_markup=reply.action_menu_kb,
+                    parse_mode='HTML'
+                )
+
         elif text == 'назад':
             await self.tree.set_state_by_type(self.return_to)
 
@@ -106,6 +116,14 @@ class QuizMenuState(State):
                 text='Неизвестная команда',
                 reply_markup=reply.action_menu_kb
             )
+
+    def split_into_chunks(text: str, chunk_size: int = 100, sep: str = "\n") -> list[str]:
+        lines = text.split(sep)
+        chunks = [
+            sep.join(lines[i:i + chunk_size])
+            for i in range(0, len(lines), chunk_size)
+        ]
+        return chunks
 
 
 class QuizActionState(State):

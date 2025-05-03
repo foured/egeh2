@@ -43,3 +43,9 @@ class InsertValueActivity(ActivityBase):
         i = self.items[idx]
         w = i.word
         return w.replace('...', i.items[0])
+    
+    def get_all_words(self) -> str:
+        s = ''
+        for i in self.items:
+            s += i.get_correct() + '\n'
+        return s.strip()

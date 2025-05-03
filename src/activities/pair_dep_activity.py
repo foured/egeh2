@@ -55,3 +55,9 @@ class PairDependendActivity(ActivityBase):
     
     def get_answer(self, id: int) -> str:
         return self.get_pair(id)[0]
+    
+    def get_all_words(self) -> str:
+        s = ''
+        for w in self.c_words:
+            s += w + '\n'
+        return s.strip()
