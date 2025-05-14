@@ -20,3 +20,7 @@ class RussianVerbSuffix(InsertValueActivity):
 class RussianPrePri(InsertValueActivity):
     def __init__(self):
         super().__init__('res/rus_pre_pri.txt')
+
+class RussianVocabulary_Insert(InsertValueActivity):
+    def __init__(self):
+        super().__init__('res/rus_vcblr_ins.txt')

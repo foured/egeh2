@@ -34,3 +34,21 @@
 #             s = line.lower().strip().replace('е', '...', 1)
 #             out.write(s + ' [Е, И]\n')
 
+with open('res/dbg.txt', encoding='utf-8') as file:
+    with open('res/dbg1.txt', mode='w', encoding='utf-8') as out:
+        for line in file:
+            w1, w2 = line.split()
+            c1 = c2 = ''
+            cw = ''
+            for char in w1:
+                if char != char.lower():
+                    c1 = char
+                    cw += '...'
+                else:
+                    cw += char
+            for char in w2:
+                if char != char.lower():
+                    c2 = char 
+            print(cw, f'[{c1}, {c2}]')
+            r = f'{cw} [{c1}, {c2}]'
+            out.write(r + '\n')

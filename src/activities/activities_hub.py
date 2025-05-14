@@ -14,6 +14,7 @@ class ActivitiesHub():
         ActivitiesHub.activities.append(RussianVocabulary())
         ActivitiesHub.activities.append(RussianVerbSuffix())
         ActivitiesHub.activities.append(RussianPrePri())
+        ActivitiesHub.activities.append(RussianVocabulary_Insert())
 
     @staticmethod
     def get(type: Type[PDT]) -> PDT:

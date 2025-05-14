@@ -133,7 +133,7 @@ class N9_ActionState(PDActionStateBase):
 class Vocabulary_MenuState(QuizMenuState):
     def __init__(self, tree):
         super().__init__(tree, 'Меню словарных слов. Выберите действие', MainMenuState,
-                          Vocabulary_ActionState, RussianVocabulary)
+                          Vocabulary_ActionState, RussianVocabulary_Insert)
         
     def get_weights(self):
         return self.tree.user.data.rus_vcblr_stats
@@ -143,14 +143,14 @@ class Vocabulary_MenuState(QuizMenuState):
     
     def rest_weights(self):
         self.tree.user.data.rus_vcblr_stats \
-            = ActivitiesHub.get(RussianVocabulary).create_statistics_array()
+            = ActivitiesHub.get(RussianVocabulary_Insert).create_statistics_array()
 
 
 
-class Vocabulary_ActionState(PDActionStateBase):
+class Vocabulary_ActionState(IVActionSateBase):
     def __init__(self, tree):
         super().__init__(tree, 'Выберите слово с правильным написанием.', 
-                         Vocabulary_MenuState, RussianVocabulary)
+                         Vocabulary_MenuState, RussianVocabulary_Insert)
         self.memory = FixedSizeList(50)
 
     def get_weights(self):
