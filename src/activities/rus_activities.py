@@ -9,9 +9,9 @@ class RussianNumber_9(PairDependendActivity):
     def __init__(self):
         super().__init__('res/rus_n9.txt')
 
-class RussianVocabulary(PairDependendActivity):
-    def __init__(self):
-        super().__init__('res/rus_vcblr.txt')
+# class RussianVocabulary(PairDependendActivity):
+#     def __init__(self):
+#         super().__init__('res/rus_vcblr.txt')
 
 class RussianVerbSuffix(InsertValueActivity):
     def __init__(self):

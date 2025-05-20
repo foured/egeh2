@@ -20,7 +20,7 @@ class User():
             
             self.rus_vcblr_score = rus_vcblr
             self.rus_vcblr_stats: list[int] \
-                = ActivitiesHub.get(RussianVocabulary).create_statistics_array()
+                = ActivitiesHub.get(RussianVocabulary_Insert).create_statistics_array()
             
             self.rus_vrb_sfx_score = rus_vrb_sfx
             self.rus_vrb_sfx_stats: list[int] \
